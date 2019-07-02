@@ -2,9 +2,15 @@ package com.maia.project.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,6 +23,7 @@ import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table
@@ -45,8 +52,13 @@ public class User implements Serializable {
 	@NotEmpty(message = "Campo password é obrigatório")
 	private String password;
 
-	public User() {
+	@JsonIgnore
+	@ElementCollection(fetch = FetchType.EAGER) // garante que quando buscar o usuario no BD, Carregue tbm seus Perfis.
+	@CollectionTable(name = "PERFIS")
+	private Set<Integer> perfis = new HashSet<>();
 
+	public User() {
+		addPerfil(Perfil.USUARIO);
 	}
 
 	public User(Long id, String name, LocalDateTime cadastro, String email, String password) {
@@ -56,6 +68,17 @@ public class User implements Serializable {
 		this.cadastro = cadastro;
 		this.email = email;
 		this.password = password;
+		addPerfil(Perfil.USUARIO);
+	}
+
+	// Retorna os Perfis dos Clientes do Enum Perfil
+	public Set<Perfil> getPerfis() {
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	}
+
+	/* Add Perfil */
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
 	}
 
 	public Long getId() {

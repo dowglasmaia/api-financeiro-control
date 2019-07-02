@@ -60,11 +60,12 @@ public class UserController {
 	}
 
 	// login
+	/*
 	@PostMapping("/login")
 	public ResponseEntity<User> login(@RequestBody UserLoginDTO userDTO) {
 		User loggedUser = service.login(userDTO.getEmail(), userDTO.getPassword());
 		return ResponseEntity.ok(loggedUser);
 
 	}
-
+*/
 }

@@ -55,7 +55,7 @@ public class UserService {
 		return users;
 	}
 
-	// Login
+	/* Login
 	public User login(String email, String password) {
 		password = HashUtil.getSecurityHash(password);
 		Optional<User> user = repoistory.login(email, password);
@@ -63,5 +63,5 @@ public class UserService {
 				() -> new RuntimeException("Usuário Não Encontrado! e-Mail: " + email + " - " + User.class.getName()));
 
 	}
-
+*/
 }
