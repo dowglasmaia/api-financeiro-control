@@ -19,7 +19,8 @@ public class JWTUtil {
 	private String secret;
 
 	public String generationToken(String email) {
-		return Jwts.builder().setSubject(email) // usuario
+		return Jwts.builder()
+				.setSubject(email) // usuario
 				.setExpiration(new Date(System.currentTimeMillis() * 10)) // tempo de expiranção
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes()) // algoritimo de Cryptografia
 				.compact();

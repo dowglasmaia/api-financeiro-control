@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Profile;
  * */
 
 @Configuration
-@Profile("prod")
+@Profile("dev")
 public class DevConfigConfig {
 
 	@Autowired
