@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.maia.project.domain.Category;
 import com.maia.project.repository.CategoryRepository;
+import com.maia.project.services.exception.ErrorHttp400;
 
 @Service
 public class CategoryService {
@@ -44,10 +45,10 @@ public class CategoryService {
 
 	}
 
-	// find list by name
-	public List<Category> listByName(String name) {
+	// find list by name - com base em seu Usuario
+	public List<Category> listByName(String name, Long idUsuario) {
 		try {
-			List<Category> obj = repoistory.findFirst10ByNameContaining(name);			
+			List<Category> obj = repoistory.findByName(name, idUsuario);
 			return obj;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,14 +56,14 @@ public class CategoryService {
 		}
 	}
 
-	// list All
-	public List<Category> findAll() {
+	// list All - com base em seu Usuario
+	public List<Category> findAll(Long idUsuario) {
 		try {
-			List<Category> categories = repoistory.findAll();
+			List<Category> categories = repoistory.findAll(idUsuario);
 			return categories;
-		} catch (Exception e) {
+		} catch (ErrorHttp400 e) {
 			e.printStackTrace();
-			throw new RuntimeException(" Operação Falhou!");
+			throw new ErrorHttp400("Operação não realizada, verifique os parametros da pesquisa!");
 		}
 	}
 

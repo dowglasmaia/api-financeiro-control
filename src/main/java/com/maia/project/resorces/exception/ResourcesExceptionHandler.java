@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.maia.project.services.exception.AuthorizationException;
 import com.maia.project.services.exception.DataIntegrityException;
+import com.maia.project.services.exception.ErrorHttp400;
 import com.maia.project.services.exception.ObjectNotFoundException;
 
 /*Class de Recursos de Erro Pensonalizado*/
@@ -48,10 +49,15 @@ public class ResourcesExceptionHandler {
 
 	@ExceptionHandler(DataIntegrityException.class)
 	public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException e, HttpServletRequest request) {
-
 		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
 				"Integridade de dados", e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 
+	@ExceptionHandler(ErrorHttp400.class)
+	public ResponseEntity<StandardError> error400(ErrorHttp400 e, HttpServletRequest request) {
+		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Operação inválida!",
+				e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
 }

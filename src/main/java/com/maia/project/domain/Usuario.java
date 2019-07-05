@@ -57,10 +57,10 @@ public class Usuario implements Serializable {
 	@CollectionTable(name = "PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
 
-	@OneToMany(mappedBy = "usuario")
+	@OneToMany(mappedBy = "usuario", orphanRemoval = true)
 	private List<Entry> entries = new ArrayList<>();
 
-	@OneToMany(mappedBy = "usuario")
+	@OneToMany(mappedBy = "usuario", orphanRemoval = true)
 	private List<Category> categories = new ArrayList<>();
 
 	public Usuario() {

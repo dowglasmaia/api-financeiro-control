@@ -54,16 +54,17 @@ public class CategoryController {
 
 	// findAll
 	@GetMapping
-	public ResponseEntity<List<Category>> listAll() {
-		List<Category> categories = service.findAll();
-		return ResponseEntity.ok().body(categories);
+	public ResponseEntity<List<Category>> listAll(@RequestParam(value = "usurio") Long idUsuario) {		
+			List<Category> categories = service.findAll(idUsuario);
+			return ResponseEntity.ok().body(categories);	
 
 	}
 
 	// find list by Name
 	@GetMapping("/lista")
-	public ResponseEntity<List<Category>> listByName(@RequestParam(value = "name") String name) {
-		List<Category> categories = service.listByName(name);
+	public ResponseEntity<List<Category>> listByName(@RequestParam(value = "name") String name,
+			@RequestParam(value = "usuario") Long idUsuario) {
+		List<Category> categories = service.listByName(name, idUsuario);
 		return ResponseEntity.ok().body(categories);
 
 	}
