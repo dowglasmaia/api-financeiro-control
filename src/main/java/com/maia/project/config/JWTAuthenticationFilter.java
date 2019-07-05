@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.maia.project.domain.dto.UserLoginDTO;
+import com.maia.project.domain.dto.CredenciaisDTO;
 
 /*
  * filtro de autenticação  - de Login
@@ -43,10 +43,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			throws AuthenticationException {
 
 		try {
-			UserLoginDTO creds = new ObjectMapper().readValue(req.getInputStream(), UserLoginDTO.class);
+			CredenciaisDTO creds = new ObjectMapper().readValue(req.getInputStream(), CredenciaisDTO.class);
 
 			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getEmail(),
-					creds.getPassword(), new ArrayList<>());
+					creds.getSenha(), new ArrayList<>());
 
 			Authentication auth = authenticationManager.authenticate(authToken); // verifica se o usuario e senha
 
@@ -64,10 +64,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		String email = ((UserSS) auth.getPrincipal()).getUsername();
 		String token = jwtUtil.generationToken(email);
 		res.addHeader("Authorization", "Bearer " + token);
-
-		res.addHeader("access-control-expose-headers", "Authorization"); // libera a Leitura do cabeçalho personalizado
-																			// Authorization por CORS
-
+		res.addHeader("access-control-expose-headers", "Authorization"); 
 	}
 	
 	/* == Correção de Erro de Resposta de Error 403 para 401 == */
@@ -84,8 +81,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 		private String json() {
 			long date = new Date().getTime();
-			return "{\"timestamp\": " + date + ", " + "\"status\": 401, " + "\"error\": \"Não autorizado\", "
-					+ "\"message\": \"Email e/ou senha inválidos\", " + "\"path\": \"/login\"}";
+			return "{\"timestamp\": "
+					+ date + ", " 
+					+ "\"status\": 401, " 
+					+ "\"error\": \"Não autorizado\", "
+					+ "\"message\": \"Email e/ou senha inválidos\", "
+					+ "\"path\": \"/login\"}";
 		}
 	}
 

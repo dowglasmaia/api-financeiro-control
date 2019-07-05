@@ -1,7 +1,6 @@
 package com.maia.project.domain;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,60 +14,62 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table
 @Audited
-@AuditTable(value = "user_audit")
-public class User implements Serializable {
-	private static final long serialVersionUID = 4131782709653831971L;
+@AuditTable(value = "usuario_audit")
+public class Usuario implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotEmpty(message = "Campo nome é obrigatório")
-	private String name;
-
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-	@NotNull
-	private LocalDateTime cadastro;
+	@Column(length = 80, nullable = false)
+	@NotEmpty(message = "Campo Nome é Obrigatórido")
+	private String nome;
 
 	@Column(length = 80, nullable = false)
-	@NotEmpty(message = "Campo e-mail é obrigatório")
-	@Email
+	@NotEmpty(message = "Campo e-Mail Obrigatórido")
+	@Email(message = "e-Mail Ínvalido")
 	private String email;
 
-	@Column(nullable = false)
-	@NotEmpty(message = "Campo password é obrigatório")
-	private String password;
+	private String senha;
+
+	@Transient
+	private String token;
 
 	@JsonIgnore
-	@ElementCollection(fetch = FetchType.EAGER) // garante que quando buscar o usuario no BD, Carregue tbm seus Perfis.
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
 
-	public User() {
-		addPerfil(Perfil.USUARIO);
+	public Usuario() {
+		addPerfil(Perfil.USUARIO); // Definindo Perfil Padrão para Todos os usuario Cadastrados
+
 	}
 
-	public User(Long id, String name, LocalDateTime cadastro, String email, String password) {
+	public Usuario(Long id, @NotEmpty(message = "Campo Nome é Obrigatórido") String nome,
+			@NotEmpty(message = "Campo e-Mail Obrigatórido") @Email(message = "e-Mail Ínvalido") String email,
+			String senha) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.cadastro = cadastro;
+		this.nome = nome;
 		this.email = email;
-		this.password = password;
+		this.senha = senha;
+
 		addPerfil(Perfil.USUARIO);
+
 	}
 
 	// Retorna os Perfis dos Clientes do Enum Perfil
@@ -89,20 +90,12 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public LocalDateTime getCadastro() {
-		return cadastro;
-	}
-
-	public void setCadastro(LocalDateTime cadastro) {
-		this.cadastro = cadastro;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getEmail() {
@@ -113,12 +106,18 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
+	@JsonIgnore
+	public String getSenha() {
+		return senha;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	@JsonProperty
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	@Override
@@ -137,7 +136,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Usuario other = (Usuario) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

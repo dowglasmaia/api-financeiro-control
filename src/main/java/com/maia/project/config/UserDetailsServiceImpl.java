@@ -6,24 +6,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.maia.project.domain.User;
-import com.maia.project.repository.UserRepoistory;
+import com.maia.project.domain.Usuario;
+import com.maia.project.repository.UsuarioRepository;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService{
-	
-	@Autowired
-	private UserRepoistory userRepo;
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-	/*buscarndo usuario pelo email, e autenticando o mesmo*/
+	@Autowired
+	private UsuarioRepository userRepo;
+
+	/* buscarndo usuario pelo email, e autenticando o mesmo */
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		
-		User user = (User)userRepo.findByEmail(email);
-		if(user == null) {
-			throw new UsernameNotFoundException("Usuário com e-mail :"+email +"- não encontrado!");
+
+		Usuario user = (Usuario) userRepo.findByEmail(email);
+		if (user == null) {
+			throw new UsernameNotFoundException("Usuário com e-mail :" + email + "- não encontrado!");
 		}
-		return new UserSS(user.getId(), user.getEmail(), user.getPassword(), user.getPerfis());
+		return new UserSS(user.getId(), user.getEmail(), user.getSenha(), user.getPerfis());
 	}
 
 }

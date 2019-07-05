@@ -3,7 +3,6 @@ package com.maia.project.services.util;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,10 +11,10 @@ import org.springframework.stereotype.Service;
 import com.maia.project.domain.Category;
 import com.maia.project.domain.Entry;
 import com.maia.project.domain.Perfil;
-import com.maia.project.domain.User;
-import com.maia.project.services.CategoryService;
-import com.maia.project.services.EntryService;
-import com.maia.project.services.UserService;
+import com.maia.project.domain.Usuario;
+import com.maia.project.repository.CategoryRepository;
+import com.maia.project.repository.EntryRespository;
+import com.maia.project.repository.UsuarioRepository;
 
 /* 
  * Class de Testes
@@ -25,23 +24,22 @@ import com.maia.project.services.UserService;
 public class DBService {
 
 	@Autowired
-	private UserService uService;
+	private EntryRespository etService;
 
 	@Autowired
-	private EntryService etService;
+	private CategoryRepository catService;
 
 	@Autowired
-	private CategoryService catService;
+	private UsuarioRepository userServices;
 
-	//@Autowired
-	//private BCryptPasswordEncoder bc;
+	@Autowired
+	private BCryptPasswordEncoder bc;
 
 	public void instanciateTestDatabase() throws ParseException {
 
-		// User
-		User user1 = new User(null, "Dowglas Maia", LocalDateTime.now(), "dowglasmaia@gmail.com", "123");
-		user1.addPerfil(Perfil.ADMIN);
-		uService.save(user1);
+		Usuario u = new Usuario(null, "Dowglas Maia", "dowglasmaia@live.com", bc.encode("maia"));		
+		u.addPerfil(Perfil.ADMIN);
+		userServices.save(u);
 
 		// category
 		Category ct1 = new Category(null, "Lazer", "Gastos fim de Semana");
