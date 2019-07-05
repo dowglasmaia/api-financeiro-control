@@ -4,11 +4,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.authentication.UserServiceBeanDefinitionParser;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.maia.project.config.UserSS;
+import com.maia.project.domain.Perfil;
 import com.maia.project.domain.Usuario;
 import com.maia.project.repository.UsuarioRepository;
+import com.maia.project.services.exception.AuthorizationException;
+import com.maia.project.services.util.UserService;
 
 @Service
 public class UsuarioService {
@@ -44,20 +49,27 @@ public class UsuarioService {
 
 	// find for id
 	public Usuario findById(Long id) {
+		UserSS user = UserService.authenticated(); // pegando Usuario Logado
+
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso Negado");
+		}
+
 		Optional<Usuario> obj = repoistory.findById(id);
 		return obj.orElseThrow(
-				() -> new RuntimeException("Usuario Não Encontrado! - id: " + id + " - " + Usuario.class.getName()));
+				() -> new AuthorizationException("Usuario Não Encontrado! - id: " + id + " - " + Usuario.class.getName()));
 
 	}
 
 	// list All
 	public List<Usuario> findAll() {
-		try {
-			List<Usuario> categories = repoistory.findAll();
-			return categories;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(" Operação Falhou!");
+		UserSS user = UserService.authenticated(); // pegando Usuario Logado
+
+		if (user != null && user.hasRole(Perfil.ADMIN)) {
+			List<Usuario> result = repoistory.findAll();
+			return result;
+		} else  {
+			throw new AuthorizationException(" Acesso Negado");
 		}
 	}
 

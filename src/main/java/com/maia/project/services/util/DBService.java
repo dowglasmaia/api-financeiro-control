@@ -40,6 +40,9 @@ public class DBService {
 		Usuario u = new Usuario(null, "Dowglas Maia", "dowglasmaia@live.com", bc.encode("maia"));		
 		u.addPerfil(Perfil.ADMIN);
 		userServices.save(u);
+		
+		Usuario u2 = new Usuario(null, "Dowglas", "dowglasmaia@gmail.com", bc.encode("maia"));		
+		userServices.save(u2);
 
 		// category
 		Category ct1 = new Category(null, "Lazer", "Gastos fim de Semana");
