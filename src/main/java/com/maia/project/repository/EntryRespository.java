@@ -10,8 +10,14 @@ import com.maia.project.domain.Entry;
 
 @Repository
 public interface EntryRespository extends JpaRepository<Entry, Long> {
-	/* Buscar por email */
+
+	/* Buscar por nome */
 	public Entry findByName(String email);
+	
+	@Query("SELECT e FROM Entry e WHERE e.usuario.id = ?1 ORDER BY e.description")
+	public List<Entry>findAll(Long idUsuario);
+	
+	
 
 
 }

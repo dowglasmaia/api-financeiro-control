@@ -3,11 +3,10 @@ package com.maia.project.domain.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import javax.persistence.ManyToOne;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.maia.project.domain.Category;
+import com.maia.project.domain.Usuario;
 
 public class EntryDTO {
 
@@ -27,6 +26,8 @@ public class EntryDTO {
 	private boolean paid;
 
 	private Category category;
+
+	private Usuario usuario;
 
 	@JsonCreator
 	public EntryDTO() {
@@ -95,6 +96,14 @@ public class EntryDTO {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 }

@@ -1,7 +1,9 @@
 package com.maia.project.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
@@ -53,6 +56,12 @@ public class Usuario implements Serializable {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
+
+	@OneToMany(mappedBy = "usuario")
+	private List<Entry> entries = new ArrayList<>();
+
+	@OneToMany(mappedBy = "usuario")
+	private List<Category> categories = new ArrayList<>();
 
 	public Usuario() {
 		addPerfil(Perfil.USUARIO); // Definindo Perfil Padrão para Todos os usuario Cadastrados
@@ -118,6 +127,14 @@ public class Usuario implements Serializable {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public List<Entry> getEntries() {
+		return entries;
+	}
+
+	public List<Category> getCategories() {
+		return categories;
 	}
 
 	@Override

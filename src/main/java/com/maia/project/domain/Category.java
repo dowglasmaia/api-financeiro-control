@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -41,6 +42,10 @@ public class Category implements Serializable {
 	private String description;
 
 	@JsonIgnore
+	@ManyToOne
+	private Usuario usuario;
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "category")
 	private List<Entry> entries = new ArrayList<>();
 
@@ -48,11 +53,12 @@ public class Category implements Serializable {
 	}
 
 	@JsonCreator
-	public Category(Long id, String name, String description) {
+	public Category(Long id, String name, String description , Usuario usuario) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.usuario = usuario;
 	}
 
 	public Long getId() {
@@ -81,6 +87,16 @@ public class Category implements Serializable {
 
 	public List<Entry> getEntries() {
 		return entries;
+	}
+	
+	
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override

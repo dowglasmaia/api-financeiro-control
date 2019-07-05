@@ -1,6 +1,5 @@
 package com.maia.project.services;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.maia.project.domain.Category;
 import com.maia.project.domain.Entry;
+import com.maia.project.domain.Usuario;
 import com.maia.project.domain.dto.EntryDTO;
 import com.maia.project.repository.EntryRespository;
 
@@ -21,7 +21,7 @@ public class EntryService {
 	// save
 	public Entry save(Entry obj) {
 		obj.setId(null);
-		
+
 		try {
 			return repoistory.save(obj);
 		} catch (Exception e) {
@@ -31,10 +31,12 @@ public class EntryService {
 	}
 
 	public Entry fromDTO(EntryDTO objDTO) {
-		Category category =  objDTO.getCategory();
+		Usuario user = objDTO.getUsuario();
+
+		Category category = objDTO.getCategory();
 
 		Entry entry = new Entry(null, objDTO.getName(), objDTO.getDescription(), objDTO.getType(), objDTO.getAmount(),
-				objDTO.getDate(), objDTO.isPaid(), category);
+				objDTO.getDate(), objDTO.isPaid(), category, user);
 		return entry;
 	}
 
@@ -57,8 +59,8 @@ public class EntryService {
 	}
 
 	// list All
-	public List<Entry> findAll() {
-		List<Entry> entries = repoistory.findAll();
+	public List<Entry> findAll(Long idUsuario) {
+		List<Entry> entries = repoistory.findAll(idUsuario);
 		return entries;
 	}
 

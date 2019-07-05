@@ -21,6 +21,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table
@@ -57,6 +58,10 @@ public class Entry implements Serializable {
 
 	private boolean paid;
 
+	@JsonIgnore
+	@ManyToOne
+	private Usuario usuario;
+
 	@ManyToOne
 	private Category category;
 
@@ -66,7 +71,7 @@ public class Entry implements Serializable {
 
 	@JsonCreator
 	public Entry(Long id, String name, String description, String type, BigDecimal amount, LocalDate date, boolean paid,
-			Category category) {
+			Category category, Usuario usuario) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -76,6 +81,7 @@ public class Entry implements Serializable {
 		this.date = date;
 		this.paid = paid;
 		this.category = category;
+		this.usuario = usuario;
 	}
 
 	public Long getId() {
@@ -140,6 +146,14 @@ public class Entry implements Serializable {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override
