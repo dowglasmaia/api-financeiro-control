@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.authentication.UserServiceBeanDefinitionParser;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +12,7 @@ import com.maia.project.domain.Perfil;
 import com.maia.project.domain.Usuario;
 import com.maia.project.repository.UsuarioRepository;
 import com.maia.project.services.exception.AuthorizationException;
+import com.maia.project.services.exception.ObjectNotFoundException;
 import com.maia.project.services.util.UserService;
 
 @Service
@@ -73,6 +73,16 @@ public class UsuarioService {
 		}
 	}
 
+	// find by email
+		public Usuario findByEmaill(String email) {
+			Usuario user = repoistory.findByEmail(email);
+			if(user != null) {
+				return user;
+			}else {
+				throw new ObjectNotFoundException("Usuário não encontrado, para o email: "+ email);
+			}
+		}
+		
 	// delete
 	public void delete(Long id) {
 		findById(id);

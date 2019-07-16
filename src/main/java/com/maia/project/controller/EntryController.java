@@ -57,7 +57,7 @@ public class EntryController {
 
 	// findAll
 	@GetMapping
-	public ResponseEntity<List<Entry>> listAll(@RequestParam(value = "all") Long idUsuario) {
+	public ResponseEntity<List<Entry>> listAll(@RequestParam(value = "usuario") Long idUsuario) {
 		List<Entry> entries = service.findAll(idUsuario);
 		return ResponseEntity.ok().body(entries);
 

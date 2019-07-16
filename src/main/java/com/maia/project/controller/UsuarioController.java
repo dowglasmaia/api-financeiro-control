@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,7 +22,7 @@ import com.maia.project.domain.Usuario;
 import com.maia.project.services.UsuarioService;
 
 @RestController
-@RequestMapping(value = "/usuarios")
+@RequestMapping(value = "/users")
 public class UsuarioController {
 
 	@Autowired
@@ -38,7 +39,9 @@ public class UsuarioController {
 	// update
 	@PutMapping("/{id}")
 	public ResponseEntity<Usuario> update(@PathVariable(name = "id") Long id, @RequestBody Usuario obj) {
+		
 		obj.setId(id);
+		
 		Usuario updateObj = service.update(obj);
 		return ResponseEntity.ok(updateObj);
 	}
@@ -55,6 +58,14 @@ public class UsuarioController {
 	public ResponseEntity<List<Usuario>> listAll() {
 		List<Usuario> result = service.findAll();
 		return ResponseEntity.ok().body(result);
+
+	}
+
+	// find
+	@GetMapping("/email")
+	public ResponseEntity<Usuario> findByEmail(@RequestParam(name = "email") String email) {
+		Usuario user = service.findByEmaill(email);
+		return ResponseEntity.ok().body(user);
 
 	}
 

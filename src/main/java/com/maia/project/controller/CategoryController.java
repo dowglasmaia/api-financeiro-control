@@ -54,7 +54,7 @@ public class CategoryController {
 
 	// findAll
 	@GetMapping
-	public ResponseEntity<List<Category>> listAll(@RequestParam(value = "usurio") Long idUsuario) {		
+	public ResponseEntity<List<Category>> listAll(@RequestParam(value = "usuario") Long idUsuario) {		
 			List<Category> categories = service.findAll(idUsuario);
 			return ResponseEntity.ok().body(categories);	
 
