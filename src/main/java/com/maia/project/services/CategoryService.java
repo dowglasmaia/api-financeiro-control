@@ -3,10 +3,14 @@ package com.maia.project.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.maia.project.domain.Category;
+import com.maia.project.domain.Usuario;
+import com.maia.project.domain.dto.CategoryNewDTO;
 import com.maia.project.repository.CategoryRepository;
 import com.maia.project.services.exception.ErrorHttp400;
 
@@ -76,6 +80,15 @@ public class CategoryService {
 			e.printStackTrace();
 			throw new RuntimeException(" Operação Falhou!");
 		}
+	}
+
+	public Category fromDTO(@Valid CategoryNewDTO objDTO) {
+
+		Usuario user = objDTO.getUsuario();
+
+		Category category = new Category(null, objDTO.getName(), objDTO.getDescription(), user);
+
+		return category;
 	}
 
 }

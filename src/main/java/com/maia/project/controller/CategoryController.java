@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.maia.project.domain.Category;
+import com.maia.project.domain.dto.CategoryNewDTO;
 import com.maia.project.services.CategoryService;
 
 @RestController
@@ -30,7 +31,8 @@ public class CategoryController {
 
 	// save
 	@PostMapping
-	public ResponseEntity<Void> save(@Valid @RequestBody Category obj) {
+	public ResponseEntity<Void> save(@Valid @RequestBody CategoryNewDTO objDTO) {
+		Category obj = service.fromDTO(objDTO);
 		obj = service.save(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
@@ -39,7 +41,8 @@ public class CategoryController {
 
 	// update
 	@PutMapping("/{id}")
-	public ResponseEntity<Category> update(@PathVariable(name = "id") Long id, @RequestBody Category obj) {
+	public ResponseEntity<Category> update(@PathVariable(name = "id") Long id, @RequestBody CategoryNewDTO objDTO) {
+		Category obj = service.fromDTO(objDTO);
 		obj.setId(id);
 		Category updateObj = service.update(obj);
 		return ResponseEntity.ok(updateObj);
