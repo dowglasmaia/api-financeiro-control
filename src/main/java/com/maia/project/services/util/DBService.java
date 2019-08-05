@@ -37,11 +37,11 @@ public class DBService {
 
 	public void instanciateTestDatabase() throws ParseException {
 
-		Usuario u = new Usuario(null, "Dowglas Maia", "dowglasmaia@live.com", bc.encode("maia"));
+		Usuario u = new Usuario(null, "Dowglas Maia", "maia_01@maia.com", bc.encode("123"));
 		u.addPerfil(Perfil.ADMIN);
 		userServices.save(u);
 
-		Usuario u2 = new Usuario(null, "Dowglas", "dowglasmaia@gmail.com", bc.encode("maia"));
+		Usuario u2 = new Usuario(null, "Kayron Maia", "maia_02@maia.com", bc.encode("123"));
 		userServices.save(u2);
 
 		// category

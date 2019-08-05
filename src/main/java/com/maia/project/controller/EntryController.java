@@ -63,6 +63,14 @@ public class EntryController {
 
 	}
 
+	// findAll
+	@GetMapping("/lista")
+	public ResponseEntity<List<Entry>> listAll() {
+		List<Entry> entries = service.findAll();
+		return ResponseEntity.ok().body(entries);
+
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);

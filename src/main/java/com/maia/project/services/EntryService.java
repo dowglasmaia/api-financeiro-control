@@ -63,6 +63,12 @@ public class EntryService {
 		List<Entry> entries = repoistory.findAll(idUsuario);
 		return entries;
 	}
+	
+	// list All
+		public List<Entry> findAll() {
+			List<Entry> entries = repoistory.findAll();
+			return entries;
+		}
 
 	// delete
 	public void delete(Long id) {
